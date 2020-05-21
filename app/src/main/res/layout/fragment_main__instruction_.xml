@@ -1,0 +1,68 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/third"
+    tools:context=".fragments.Main_Instruction_Fragment">
+
+    <Button
+        android:id="@+id/newProfileButtonFragMain"
+        android:layout_width="170dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="131dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/main_profile_button"
+        app:layout_constraintBottom_toTopOf="@+id/rideLearnButtonFragMain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.543"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/rideLearnButtonFragMain"
+        android:layout_width="190dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="59dp"
+        android:background="@drawable/ride_learn_button"
+        app:layout_constraintBottom_toTopOf="@+id/searchRideButtonFragMain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newProfileButtonFragMain" />
+
+    <Button
+        android:id="@+id/searchRideButtonFragMain"
+        android:layout_width="190dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="65dp"
+        android:background="@drawable/ride_search_button"
+        app:layout_constraintBottom_toTopOf="@+id/beginNewRideButtonFragMain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rideLearnButtonFragMain" />
+
+    <Button
+        android:id="@+id/beginNewRideButtonFragMain"
+        android:layout_width="250dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="62dp"
+        android:background="@drawable/begin_new_ride_button"
+        app:layout_constraintBottom_toTopOf="@+id/weatherButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.316"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchRideButtonFragMain" />
+
+    <Button
+        android:id="@+id/weatherButton"
+        android:layout_width="150dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="179dp"
+        android:background="@drawable/weather_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.578"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/beginNewRideButtonFragMain" />
+</androidx.constraintlayout.widget.ConstraintLayout>
