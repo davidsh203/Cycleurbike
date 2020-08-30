@@ -1,5 +1,6 @@
 package com.example.cycleurbike.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,19 +8,19 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
 import com.example.cycleurbike.R;
-import com.example.cycleurbike.activities.MainActivity;
+import com.example.cycleurbike.activities.WeatherScreen;
+import com.example.cycleurbike.activities.YouTube;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Fragment2#newInstance} factory method to
+ * Use the {@link MainAppPage#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Fragment2 extends Fragment {
+public class MainAppPage extends Fragment {
+    Intent intent;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -29,7 +30,7 @@ public class Fragment2 extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Fragment2() {
+    public MainAppPage() {
         // Required empty public constructor
     }
 
@@ -39,11 +40,11 @@ public class Fragment2 extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Fragment2.
+     * @return A new instance of fragment Main_Instruction_Fragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static Fragment2 newInstance(String param1, String param2) {
-        Fragment2 fragment = new Fragment2();
+    public static MainAppPage newInstance(String param1, String param2) {
+        MainAppPage fragment = new MainAppPage();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -60,30 +61,42 @@ public class Fragment2 extends Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_2, container, false);
+        View view = inflater.inflate(R.layout.main_app_page, container, false);
 
-
-        final Animation myAnim4 = AnimationUtils.loadAnimation(getContext(), R.anim.bounce);
-        Button button4 = (Button) view.findViewById(R.id.finishButtonFrag2);
-        button4.setOnClickListener(new View.OnClickListener() {
+        final Button button = (Button) view.findViewById(R.id.weatherButton);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.startAnimation(myAnim4);
+                Intent intent = new Intent(getActivity(), WeatherScreen.class);
+                startActivity(intent);
             }
         });
 
-        button4.setOnClickListener(new View.OnClickListener() {
+        final Button button1 = (Button) view.findViewById(R.id.rideLearnButtonFragMain);
+        button1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { // inner class
-                MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.loadMainPage(); //
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), YouTube.class);
+                startActivity(intent);
             }
         });
-
         return view;
     }
+
+
+
+
+/*
+    @Override
+    public void onActivityCreated (Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        ((WeatherScreen) this.getActivity()).onFragmentReady();
+    }
+*/
 }

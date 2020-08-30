@@ -17,14 +17,12 @@ import android.widget.Button;
 import com.example.cycleurbike.activities.MainActivity;
 import com.example.cycleurbike.classes.OnSwipeTouchListener;
 
-import java.lang.reflect.Method;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Fragment1#newInstance} factory method to
+ * Use the {@link LogInScreen#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Fragment1 extends Fragment {
+public class LogInScreen extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -34,7 +32,7 @@ public class Fragment1 extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Fragment1() {
+    public LogInScreen() {
         // Required empty public constructor
     }
 
@@ -47,8 +45,8 @@ public class Fragment1 extends Fragment {
      * @return A new instance of fragment Fragment1.
      */
     // TODO: Rename and change types and number of parameters
-    public static Fragment1 newInstance(String param1, String param2) {
-        Fragment1 fragment = new Fragment1();
+    public static LogInScreen newInstance(String param1, String param2) {
+        LogInScreen fragment = new LogInScreen();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -70,16 +68,14 @@ public class Fragment1 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_1, container, false);
+        View view = inflater.inflate(R.layout.log_in_screen, container, false);
         final Animation rotateAnim = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
 
-        final Button enterButtonFrag1 = (Button) view.findViewById(R.id.enterButtonFrag1);
+        final Button enterButtonFrag1 = (Button) view.findViewById(R.id.enterButtonMainScreen);
         enterButtonFrag1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // inner class
-                MainActivity mainActivity = (MainActivity) getActivity();
-               //mainActivity.loadMainPage(); //no need this, its called in startButtonAnimation function
-              startButtonAnimation(enterButtonFrag1,rotateAnim,mainActivity);
+              startButtonAnimation(enterButtonFrag1,rotateAnim);
 
             }
         });
@@ -94,7 +90,7 @@ public class Fragment1 extends Fragment {
         });
 
         final Animation myAnim2 = AnimationUtils.loadAnimation(getContext(), R.anim.scale);
-        Button registerButtonFrag1 = (Button) view.findViewById(R.id.registerButtonFrag1);
+        Button registerButtonFrag1 = (Button) view.findViewById(R.id.registerButtonMainScreen);
         registerButtonFrag1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,8 +100,9 @@ public class Fragment1 extends Fragment {
             }
         });
 
+        // אנימציה שכחתי סיסמא עובדת!
         final Animation myAnim3 = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
-        Button forgetPasswordButtonFrag1 = (Button) view.findViewById(R.id.forgetPasswordButtonFrag1);
+        Button forgetPasswordButtonFrag1 = (Button) view.findViewById(R.id.forgetPasswordButtonMainScreen);
         forgetPasswordButtonFrag1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,7 +125,8 @@ public class Fragment1 extends Fragment {
         return view;
     }
 
-    private void startButtonAnimation(Button btn, Animation anim, final MainActivity funcRun ) {
+    // כפתור כניסה על מנת שהאנימה תתבצע וייראו אותה
+    private void startButtonAnimation(Button btn, Animation anim) {
         btn.setAnimation(anim);
         btn.startAnimation(anim);
 
@@ -143,10 +141,11 @@ public class Fragment1 extends Fragment {
             public void onAnimationRepeat(Animation animation) {
 
             }
-
+            // TODO למצוא דרך להפעיל את הפונקציה על ידי העברת הפרמטר שנלחץ לפונ' בכדי לקצר בקוד
             @Override
             public void onAnimationEnd(Animation animation) {
-                funcRun.loadMainPage();
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.loadMainPage();
             }
         });
     }

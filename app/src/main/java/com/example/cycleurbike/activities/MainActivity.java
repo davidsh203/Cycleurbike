@@ -6,9 +6,9 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.example.cycleurbike.R;
-import com.example.cycleurbike.fragments.Fragment1;
-import com.example.cycleurbike.fragments.Fragment2;
-import com.example.cycleurbike.fragments.Main_Instruction_Fragment;
+import com.example.cycleurbike.fragments.LogInScreen;
+import com.example.cycleurbike.fragments.RegisterScreen;
+import com.example.cycleurbike.fragments.MainAppPage;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            Fragment1 firstFragment = new Fragment1();
+            LogInScreen firstFragment = new LogInScreen();
 
             firstFragment.setArguments(getIntent().getExtras());
 
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void loadFirstFragment() {
-        Fragment1 firstFragment = new Fragment1();
+        LogInScreen firstFragment = new LogInScreen();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadSecFragment() {
 
-        Fragment2 secondFragment = new Fragment2();
+        RegisterScreen secondFragment = new RegisterScreen();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadMainPage() {
 
-        Main_Instruction_Fragment mainPageFragment = new Main_Instruction_Fragment();
+        MainAppPage mainPageFragment = new MainAppPage();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
 
     }
-
 
 
 }
