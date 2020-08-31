@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.cycleurbike.R;
+import com.example.cycleurbike.activities.MapsActivity;
 import com.example.cycleurbike.activities.WeatherScreen;
 import com.example.cycleurbike.activities.YouTube;
 
@@ -85,6 +86,16 @@ public class MainAppPage extends Fragment {
                 startActivity(intent);
             }
         });
+
+        final Button button2 = (Button) view.findViewById(R.id.beginNewRideButtonFragMain);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
