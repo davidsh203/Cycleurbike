@@ -87,7 +87,7 @@ public class MainAppPage extends Fragment {
             }
         });
 
-        final Button button2 = (Button) view.findViewById(R.id.beginNewRideButtonFragMain);
+       final Button button2 = (Button) view.findViewById(R.id.beginNewRideButtonFragMain);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -29,20 +29,24 @@ public class YouTube extends YouTubeBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_you_tube);
         Log.d(TAG, "onCreate: Starting.");
-        btnPlay = (Button) findViewById(R.id.btnPlay);
-        mYouTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtubePlay);
+        btnPlay = (Button) findViewById(R.id.btnPlay1);
+        //btnPlay = (Button) findViewById(R.id.btnPlay2);
+        mYouTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtubePlay1);
+        //mYouTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtubePlay2);
         mOnInitializedListener = new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
                 Log.d(TAG, "onClick: Done initializing.");
-                youTubePlayer.loadPlaylist("PLADwDOrxo3EVYNxGDck5tppH9Z0_nbyez");
+                //youTubePlayer.loadPlaylist("PLQkwcJG4YTCQ6emtoqSZS2FVwZR9FT3BV");
 
-                //List<String> videoList = new ArrayList<>();
-                //videoList.add("wv-iUZEfiE8");
-                //videoList.add("W4hTJybfU7s");
+
+                List<String> videoList = new ArrayList<>();
+                videoList.add("wv-iUZEfiE8");
+                videoList.add("wEZ7XdHO3GI");
 
                 //youTubePlayer.loadVideo("wv-iUZEfiE8");
             }
+
 
             @Override
             public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
@@ -57,5 +61,6 @@ public class YouTube extends YouTubeBaseActivity {
                 mYouTubePlayerView.initialize(YouTubeConfig.getApiKey(),mOnInitializedListener);
             }
         });
+
     }
 }
