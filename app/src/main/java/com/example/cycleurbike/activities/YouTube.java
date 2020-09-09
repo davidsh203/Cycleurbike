@@ -6,21 +6,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
 import com.example.cycleurbike.R;
-import com.example.cycleurbike.adapter.YoutubeVideoAdapter;
-import com.example.cycleurbike.model.YoutubeVideoModel;
-import com.example.cycleurbike.util.RecyclerViewOnClickListener;
-import com.google.android.youtube.player.YouTubeBaseActivity;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
+import com.example.cycleurbike.youtube.YoutubeVideoAdapter;
+import com.example.cycleurbike.youtube.YoutubeVideoModel;
+import com.example.cycleurbike.youtube.RecyclerViewOnClickListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class YouTube extends AppCompatActivity {
     private RecyclerView recyclerView;

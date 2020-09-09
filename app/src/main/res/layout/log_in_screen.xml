@@ -29,7 +29,7 @@
             android:layout_gravity="center"
             android:ems="10"
             android:gravity="center|center_horizontal|center_vertical|top"
-            android:hint="הכנס מייל"
+            android:hint="הכנס אימייל"
             android:inputType="textEmailAddress" />
 
         <EditText
@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
-                android:text="הירשם!"
+                android:text="הירשם עכשיו!"
                 android:textSize="18sp" />
         </LinearLayout>
 

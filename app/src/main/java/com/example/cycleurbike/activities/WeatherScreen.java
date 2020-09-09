@@ -4,6 +4,7 @@ package com.example.cycleurbike.activities;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import com.example.cycleurbike.R;
 
@@ -19,7 +20,6 @@ import java.util.Date;
 import java.util.Locale;
 
 public class WeatherScreen extends AppCompatActivity {
-
     String CITY = "Petah Tikva";
     String API = "97dbf361cd33e8c1312166c0f2c91686";
 
@@ -30,7 +30,6 @@ public class WeatherScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather_screen);
-
         addressTxt = findViewById(R.id.address);
         updated_atTxt = findViewById(R.id.updated_at);
         statusTxt = findViewById(R.id.status);
@@ -42,7 +41,6 @@ public class WeatherScreen extends AppCompatActivity {
         windTxt = findViewById(R.id.wind);
         pressureTxt = findViewById(R.id.pressure);
         humidityTxt = findViewById(R.id.humidity);
-
         new weatherTask().execute();
     }
 
@@ -58,13 +56,13 @@ public class WeatherScreen extends AppCompatActivity {
         }
 
         protected String doInBackground(String... args) {
-            String response = HttpRequest.excuteGet("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&units=metric&appid=" + API);
-            return response;
+            String response = HttpRequest.excuteGet("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&lang=he"+ "&units=metric&appid=" + API);
+           // return response
+           return  response;
         }
 
         @Override
         protected void onPostExecute(String result) {
-
 
             try {
                 JSONObject jsonObj = new JSONObject(result);
