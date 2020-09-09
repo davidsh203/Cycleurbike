@@ -47,7 +47,9 @@
             android:label="@string/title_activity_maps"></activity>
         <activity android:name=".activities.YouTube" />
         <activity android:name=".activities.WeatherScreen" />
+        <activity android:name=".activities.YoutubePlayerActivity"/>
         <activity android:name=".activities.MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

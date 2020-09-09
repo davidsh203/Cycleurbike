@@ -1,13 +1,19 @@
 package com.example.cycleurbike.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.cycleurbike.R;
+import com.example.cycleurbike.adapter.YoutubeVideoAdapter;
+import com.example.cycleurbike.model.YoutubeVideoModel;
+import com.example.cycleurbike.util.RecyclerViewOnClickListener;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -16,51 +22,75 @@ import com.google.android.youtube.player.YouTubePlayerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class YouTube extends YouTubeBaseActivity {
-
-    private static final String TAG = "YouTube";
-
-    YouTubePlayerView mYouTubePlayerView;
-    Button btnPlay;
-    YouTubePlayer.OnInitializedListener mOnInitializedListener;
+public class YouTube extends AppCompatActivity {
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_you_tube);
-        Log.d(TAG, "onCreate: Starting.");
-        btnPlay = (Button) findViewById(R.id.btnPlay1);
-        //btnPlay = (Button) findViewById(R.id.btnPlay2);
-        mYouTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtubePlay1);
-        //mYouTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtubePlay2);
-        mOnInitializedListener = new YouTubePlayer.OnInitializedListener() {
+        setUpRecyclerView();
+        populateRecyclerView();
+
+    }
+
+    /**
+     * setup the recyclerview here
+     */
+    private void setUpRecyclerView() {
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+    }
+
+    /**
+     * populate the recyclerview and implement the click event here
+     */
+    private void populateRecyclerView() {
+        final ArrayList<YoutubeVideoModel> youtubeVideoModelArrayList = generateDummyVideoList();
+        YoutubeVideoAdapter adapter = new YoutubeVideoAdapter(this, youtubeVideoModelArrayList);
+        recyclerView.setAdapter(adapter);
+
+        //set click event
+        recyclerView.addOnItemTouchListener(new RecyclerViewOnClickListener(this, new RecyclerViewOnClickListener.OnItemClickListener() {
             @Override
-            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-                Log.d(TAG, "onClick: Done initializing.");
-                //youTubePlayer.loadPlaylist("PLQkwcJG4YTCQ6emtoqSZS2FVwZR9FT3BV");
+            public void onItemClick(View view, int position) {
 
-
-                List<String> videoList = new ArrayList<>();
-                videoList.add("wv-iUZEfiE8");
-                videoList.add("wEZ7XdHO3GI");
-
-                //youTubePlayer.loadVideo("wv-iUZEfiE8");
-            }
-
-
-            @Override
-            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-                Log.d(TAG, "onClick: Failed to initializing.");
+                //start youtube player activity by passing selected video id via intent
+                startActivity(new Intent(YouTube.this, YoutubePlayerActivity.class)
+                        .putExtra("video_id", youtubeVideoModelArrayList.get(position).getVideoId()));
 
             }
-        };
-        btnPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: Initializing YouTube Player.");
-                mYouTubePlayerView.initialize(YouTubeConfig.getApiKey(),mOnInitializedListener);
-            }
-        });
+        }));
+    }
 
+
+    /**
+     * method to generate dummy array list of videos
+     *
+     * @return
+     */
+    private ArrayList<YoutubeVideoModel> generateDummyVideoList() {
+        ArrayList<YoutubeVideoModel> youtubeVideoModelArrayList = new ArrayList<>();
+
+        //get the video id array, title array and duration array from strings.xml
+        String[] videoIDArray = getResources().getStringArray(R.array.video_id_array);
+        String[] videoTitleArray = getResources().getStringArray(R.array.video_title_array);
+        String[] videoDurationArray = getResources().getStringArray(R.array.video_duration_array);
+
+        //loop through all items and add them to arraylist
+        for (int i = 0; i < videoIDArray.length; i++) {
+
+            YoutubeVideoModel youtubeVideoModel = new YoutubeVideoModel();
+            youtubeVideoModel.setVideoId(videoIDArray[i]);
+            youtubeVideoModel.setTitle(videoTitleArray[i]);
+            youtubeVideoModel.setDuration(videoDurationArray[i]);
+
+            youtubeVideoModelArrayList.add(youtubeVideoModel);
+
+        }
+
+        return youtubeVideoModelArrayList;
     }
 }

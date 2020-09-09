@@ -9,6 +9,7 @@ import com.example.cycleurbike.R;
 import com.example.cycleurbike.fragments.LogInScreen;
 import com.example.cycleurbike.fragments.RegisterScreen;
 import com.example.cycleurbike.fragments.MainAppPage;
+import com.example.cycleurbike.fragments.MainAppPage;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadMainPage() {
-
         MainAppPage mainPageFragment = new MainAppPage();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

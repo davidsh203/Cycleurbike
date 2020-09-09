@@ -5,7 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 import com.example.cycleurbike.R;
-import com.example.cycleurbike.youtube.ApiKey;
+import com.example.cycleurbike.util.Constants;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -30,7 +30,7 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity {
      * initialize the youtube player
      */
     private void initializeYoutubePlayer() {
-        youTubePlayerView.initialize(ApiKey.DEVELOPER_KEY, new YouTubePlayer.OnInitializedListener() {
+        youTubePlayerView.initialize(Constants.DEVELOPER_KEY, new YouTubePlayer.OnInitializedListener() {
 
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer,
