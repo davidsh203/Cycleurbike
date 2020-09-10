@@ -3,6 +3,7 @@ package com.example.cycleurbike.activities;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,9 +21,9 @@ import java.util.Date;
 import java.util.Locale;
 
 public class WeatherScreen extends AppCompatActivity {
-    String CITY = "Petah Tikva";
+    String CITY = "Jerusalem";
     String API = "97dbf361cd33e8c1312166c0f2c91686";
-
+    EditText enterCity;
     TextView addressTxt, updated_atTxt, statusTxt, tempTxt, temp_minTxt, temp_maxTxt, sunriseTxt,
             sunsetTxt, windTxt, pressureTxt, humidityTxt;
 
@@ -41,10 +42,18 @@ public class WeatherScreen extends AppCompatActivity {
         windTxt = findViewById(R.id.wind);
         pressureTxt = findViewById(R.id.pressure);
         humidityTxt = findViewById(R.id.humidity);
+        enterCity = findViewById(R.id.enterCiy);
         new weatherTask().execute();
     }
 
-    class weatherTask extends AsyncTask<String, Void, String> {
+    public void citySearch(View view) {
+        CITY=enterCity.getText().toString();
+        new weatherTask().execute();
+    }
+
+
+    private class weatherTask extends AsyncTask<String, Void, String> {
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -56,6 +65,7 @@ public class WeatherScreen extends AppCompatActivity {
         }
 
         protected String doInBackground(String... args) {
+            Log.i("hi","hel: "+args);
             String response = HttpRequest.excuteGet("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&lang=he"+ "&units=metric&appid=" + API);
            // return response
            return  response;
