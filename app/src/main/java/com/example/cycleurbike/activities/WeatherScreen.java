@@ -3,19 +3,14 @@ package com.example.cycleurbike.activities;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.example.cycleurbike.R;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.androdocs.httprequest.HttpRequest;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -46,13 +41,12 @@ public class WeatherScreen extends AppCompatActivity {
         new weatherTask().execute();
     }
 
-    public void citySearch(View view) {
+    public void citySearch(View view) {//פונקציה שמחפשת עיר למזג אוויר
         CITY=enterCity.getText().toString();
         new weatherTask().execute();
     }
 
-
-    private class weatherTask extends AsyncTask<String, Void, String> {
+     class weatherTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected void onPreExecute() {
@@ -65,7 +59,6 @@ public class WeatherScreen extends AppCompatActivity {
         }
 
         protected String doInBackground(String... args) {
-            Log.i("hi","hel: "+args);
             String response = HttpRequest.excuteGet("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&lang=he"+ "&units=metric&appid=" + API);
            // return response
            return  response;
@@ -96,7 +89,6 @@ public class WeatherScreen extends AppCompatActivity {
 
                 String address = jsonObj.getString("name") + ", " + sys.getString("country");
 
-
                 /* Populating extracted data into our views */
                 addressTxt.setText(address);
                 updated_atTxt.setText(updatedAtText);
@@ -114,12 +106,10 @@ public class WeatherScreen extends AppCompatActivity {
                 findViewById(R.id.loader).setVisibility(View.GONE);
                 findViewById(R.id.mainContainer).setVisibility(View.VISIBLE);
 
-
             } catch (JSONException e) {
                 findViewById(R.id.loader).setVisibility(View.GONE);
                 findViewById(R.id.errorText).setVisibility(View.VISIBLE);
             }
-
         }
     }
 }

@@ -7,12 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.cycleurbike.R;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
-
 import java.util.ArrayList;
 
 
@@ -39,7 +37,6 @@ public class YoutubeVideoAdapter extends RecyclerView.Adapter<YoutubeViewHolder>
     public void onBindViewHolder(YoutubeViewHolder holder, final int position) {
 
         final YoutubeVideoModel youtubeVideoModel = youtubeVideoModelArrayList.get(position);
-
         holder.videoTitle.setText(youtubeVideoModel.getTitle());
         holder.videoDuration.setText(youtubeVideoModel.getDuration());
 

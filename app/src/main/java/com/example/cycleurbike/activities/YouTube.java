@@ -3,16 +3,13 @@ package com.example.cycleurbike.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-
 import com.example.cycleurbike.R;
 import com.example.cycleurbike.youtube.YoutubeVideoAdapter;
 import com.example.cycleurbike.youtube.YoutubeVideoModel;
 import com.example.cycleurbike.youtube.RecyclerViewOnClickListener;
-
 import java.util.ArrayList;
 
 public class YouTube extends AppCompatActivity {
@@ -26,7 +23,6 @@ public class YouTube extends AppCompatActivity {
         populateRecyclerView();
 
     }
-
     /**
      * setup the recyclerview here
      */
@@ -58,7 +54,6 @@ public class YouTube extends AppCompatActivity {
         }));
     }
 
-
     /**
      * method to generate dummy array list of videos
      *
@@ -74,16 +69,13 @@ public class YouTube extends AppCompatActivity {
 
         //loop through all items and add them to arraylist
         for (int i = 0; i < videoIDArray.length; i++) {
-
             YoutubeVideoModel youtubeVideoModel = new YoutubeVideoModel();
             youtubeVideoModel.setVideoId(videoIDArray[i]);
             youtubeVideoModel.setTitle(videoTitleArray[i]);
             youtubeVideoModel.setDuration(videoDurationArray[i]);
-
             youtubeVideoModelArrayList.add(youtubeVideoModel);
 
         }
-
         return youtubeVideoModelArrayList;
     }
 }

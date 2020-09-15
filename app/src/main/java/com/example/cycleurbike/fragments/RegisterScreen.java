@@ -1,16 +1,13 @@
 package com.example.cycleurbike.fragments;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-
 import com.example.cycleurbike.R;
 import com.example.cycleurbike.activities.MainActivity;
 
@@ -66,7 +63,6 @@ public class RegisterScreen extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.register_screen, container, false);
 
-
         final Animation myAnim4 = AnimationUtils.loadAnimation(getContext(), R.anim.bounce);
         Button button4 = (Button) view.findViewById(R.id.finishButtonRegisterScreen);
         button4.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +76,7 @@ public class RegisterScreen extends Fragment {
             @Override
             public void onClick(View v) { // inner class
                 MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.loadMainPage(); //
+                mainActivity.loadMainAppPage(); //
             }
         });
 

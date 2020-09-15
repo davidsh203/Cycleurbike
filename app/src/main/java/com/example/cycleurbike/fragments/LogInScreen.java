@@ -1,19 +1,14 @@
 package com.example.cycleurbike.fragments;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.cycleurbike.R;
-
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-
 import com.example.cycleurbike.activities.MainActivity;
 import com.example.cycleurbike.classes.OnSwipeTouchListener;
 
@@ -63,7 +58,6 @@ public class LogInScreen extends Fragment {
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -84,7 +78,7 @@ public class LogInScreen extends Fragment {
             public boolean onLongClick(View v) {
                 v.startAnimation(rotateAnim);
                 MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.loadMainPage();
+                mainActivity.loadMainAppPage();
                 return true;
             }
         });
@@ -96,11 +90,11 @@ public class LogInScreen extends Fragment {
             public void onClick(View v) {
                 v.startAnimation(myAnim2);
                 MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.loadSecFragment(); //
+                mainActivity.loadRegisterScreen();
             }
         });
 
-        // אנימציה שכחתי סיסמא עובדת!
+        // אנימציה שכחתי סיסמה
         final Animation myAnim3 = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
         Button forgetPasswordButtonFrag1 = (Button) view.findViewById(R.id.forgetPasswordButtonMainScreen);
         forgetPasswordButtonFrag1.setOnClickListener(new View.OnClickListener() {
@@ -112,12 +106,11 @@ public class LogInScreen extends Fragment {
 
         view.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
 
-
             @Override
             public void onSwipeRight() {
                 super.onSwipeRight();
                 MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.loadSecFragment();
+                mainActivity.loadRegisterScreen();
 
             }
         });
@@ -125,27 +118,24 @@ public class LogInScreen extends Fragment {
         return view;
     }
 
-    // כפתור כניסה על מנת שהאנימה תתבצע וייראו אותה
+    // כפתור כניסה על מנת שהאנימציה תתבצע וייראו אותה
     private void startButtonAnimation(Button btn, Animation anim) {
         btn.setAnimation(anim);
         btn.startAnimation(anim);
-
         anim.setAnimationListener(new Animation.AnimationListener() {
 
             @Override
             public void onAnimationStart(Animation animation) {
-
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
             }
             // TODO למצוא דרך להפעיל את הפונקציה על ידי העברת הפרמטר שנלחץ לפונ' בכדי לקצר בקוד
             @Override
             public void onAnimationEnd(Animation animation) {
                 MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.loadMainPage();
+                mainActivity.loadMainAppPage();
             }
         });
     }

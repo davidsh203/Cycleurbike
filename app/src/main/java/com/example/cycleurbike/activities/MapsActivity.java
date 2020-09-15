@@ -1,9 +1,7 @@
 package com.example.cycleurbike.activities;
 
 import androidx.fragment.app.FragmentActivity;
-
 import android.os.Bundle;
-
 import com.example.cycleurbike.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
