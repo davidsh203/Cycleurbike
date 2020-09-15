@@ -114,7 +114,6 @@ public class LogInScreen extends Fragment {
 
             }
         });
-
         return view;
     }
 
@@ -139,7 +138,5 @@ public class LogInScreen extends Fragment {
             }
         });
     }
-
-
 }
 

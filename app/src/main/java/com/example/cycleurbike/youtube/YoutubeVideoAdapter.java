@@ -1,6 +1,5 @@
 package com.example.cycleurbike.youtube;
 
-
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
@@ -12,8 +11,6 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 import java.util.ArrayList;
-
-
 
 public class YoutubeVideoAdapter extends RecyclerView.Adapter<YoutubeViewHolder> {
     private static final String TAG = YoutubeVideoAdapter.class.getSimpleName();

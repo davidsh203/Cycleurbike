@@ -7,42 +7,58 @@
     <string name="close_player_activity">Close Player activity</string>
     <!--  we need to use video ids instead of video link  -->
     <string-array name="video_id_array">
-        <item>3nlkTf5LHo8</item>
+       	<item>oA4dQEiVJ7E</item>
+	<item>tzhzghajvFw</item>
+	<item>QTO77X_sKP0</item>
+        <item>AhJhAnb2IIc</item>
         <item>XwprrzKZcY0</item>
-        <item>4xsPzdmNPsM</item>
-        <item>vSUW9GIOXDg</item>
-        <item>eo26Cj-Rk8o</item>
-        <item>hoAMwTVW27E</item>
-        <item>egXAi4cbLp4</item>
-        <item>RxkRDGlduAE</item>
-        <item>XwprrzKZcY0</item>
-        <item>xCg10LIRwQc</item>
+        <item>Fa09yTqqI8Q</item>
+        <item>iUZEfiE8</item>
+        <item>b2ig0AF4g6g</item>
+        <item>VfaSyPAyc3k</item>
+        <item>6qj_yzkJ_M</item>
+        <item>jHsU08T2fks</item>
+        <item>PKobyFWV25w</item>
+        <item>XKaOeeHQsig</item>
+        <item>CihPLBm2Pk0</item>
+
     </string-array>
 
     <string-array name="video_title_array">
-        <item>Android Security Lock Demo</item>
-        <item>Android Sectioned RecyclerView Demo</item>
-        <item>Android Home Screen Widgets Demo</item>
-        <item>Android Floating Widget like Facebook Messenger Chat Head Demo</item>
-        <item>Android Google Maps Introduction Demo</item>
-        <item>Android Lollipop Activity Transitions Demo</item>
-        <item>Android Toolbar Animation Using Design Support Library Demo</item>
-        <item>Android Material Advance Tabs Demo</item>
-        <item>Android Drag and Drop Demo</item>
-        <item>Android Fingerprint Authentication Demo</item>
+        <item>טורקי מציג: טיפים לרכיבה בסיסית</item>
+        <item>טורקי מציג: תפעול תקלות וטיפים למתחילים</item>
+        <item>בחירת אופני הרים וציוד למתחילים - טיפים מעשיים</item>
+        <item>פניות על אופניים: שיווי משקל ומיקום הרגליים</item>
+        <item>מיקום העקבים והשפעה על שיווי המשקל- טכניקה לאופני הרים</item>
+        <item>8 טכניקות שאפשר וצריך להתאמן עליהן במגרש!</item>
+        <item>עמידת מוצא על אופני הרים- טכניקת רכיבה</item>
+        <item>טכניקת רכיבה - עליות טכניות באופניים</item>
+        <item>טיפים וטריקים אופניים</item>
+        <item>TCH-איך לטפס עליות ארוכות</item>
+        <item>טיפ רכיבה של חנוך רדליך - שימוש נכון בבלמים</item>
+        <item>איך להתמודד עם ירידות על אופני הרים?</item>
+        <item>התאמת אופניים לרוכב כביש</item>
+        <item>TCH-איך עושים ווילי על אופני כביש</item>
+
+
     </string-array>
 
     <string-array name="video_duration_array">
-        <item>02:48</item>
-        <item>00:44</item>
-        <item>01:01</item>
-        <item>00:55</item>
+        <item>01:33</item>
+        <item>01:05</item>
+        <item>03:55</item>
+        <item>06:08</item>
+        <item>05:03</item>
+        <item>12:36</item>
         <item>01:03</item>
-        <item>00:25</item>
-        <item>00:34</item>
-        <item>00:45</item>
-        <item>00:52</item>
-        <item>00:28</item>
+        <item>01:41</item>
+        <item>02:36</item>
+        <item>03:46</item>
+        <item>05:21</item>
+        <item>02:46</item>
+        <item>01:36</item>
+        <item>02:03</item>
+
     </string-array>
 
 </resources>

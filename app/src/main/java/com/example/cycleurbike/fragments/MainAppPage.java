@@ -91,10 +91,8 @@ public class MainAppPage extends Fragment {
                 startActivity(intent);
             }
         });
-
         return view;
     }
-
 /*
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {

@@ -1,6 +1,5 @@
 package com.example.cycleurbike.youtube;
 
-
 import android.view.View;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;

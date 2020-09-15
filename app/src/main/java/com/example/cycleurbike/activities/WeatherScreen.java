@@ -1,12 +1,13 @@
-
 package com.example.cycleurbike.activities;
 
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.example.cycleurbike.R;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.androdocs.httprequest.HttpRequest;
 import org.json.JSONException;
@@ -39,77 +40,120 @@ public class WeatherScreen extends AppCompatActivity {
         humidityTxt = findViewById(R.id.humidity);
         enterCity = findViewById(R.id.enterCiy);
         new weatherTask().execute();
+
     }
 
-    public void citySearch(View view) {//פונקציה שמחפשת עיר למזג אוויר
-        CITY=enterCity.getText().toString();
-        new weatherTask().execute();
+    public void popUpMessage(String msg) { //פונקציה שמקפיצה הודעת שגיאה באם התיבת חיפוש של העיר ריקה או שהעיר עצמה אינה קיימת
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogCustom);
+
+        // set title
+        alertDialogBuilder.setTitle(msg);
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("")
+                .setCancelable(false)
+                .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {  //כפתור לאישור ההודעה
+                        // if this button is clicked, close
+                        // current activity
+                        // WeatherScreen.this.closeContextMenu();
+                        new weatherTask().execute();
+                    }
+                })
+                .setNegativeButton("", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) { //כפתור לביטול ההודעה ויציאה מן ההודעה ללא פעולה
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        //dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 
-     class weatherTask extends AsyncTask<String, Void, String> {
+    public void citySearch(View view) {//פונקציה שמופעלת בלחיצה על כפתור חיפוש לאחר הקלדת עיר מסויימת ומשנה את המסך בהתאם
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            /* Showing the ProgressBar, Making the main design GONE */
-            findViewById(R.id.loader).setVisibility(View.VISIBLE);
-            findViewById(R.id.mainContainer).setVisibility(View.GONE);
-            findViewById(R.id.errorText).setVisibility(View.GONE);
+        if (!(enterCity.getText().toString().matches(""))) { //אם שדה חיפוש העיר אינו ריק
+            CITY = enterCity.getText().toString();
+            new weatherTask().execute();
+        } else { //אם שדה חיפוש העיר ריק
+            popUpMessage("אנא כתוב עיר");
         }
+    }
+        class weatherTask extends AsyncTask<String, Void, String> {
 
-        protected String doInBackground(String... args) {
-            String response = HttpRequest.excuteGet("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&lang=he"+ "&units=metric&appid=" + API);
-           // return response
-           return  response;
-        }
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
 
-        @Override
-        protected void onPostExecute(String result) {
+                /* Showing the ProgressBar, Making the main design GONE */
+                findViewById(R.id.loader).setVisibility(View.VISIBLE);
+                findViewById(R.id.mainContainer).setVisibility(View.GONE);
+                findViewById(R.id.errorText).setVisibility(View.GONE);
+            }
 
-            try {
-                JSONObject jsonObj = new JSONObject(result);
-                JSONObject main = jsonObj.getJSONObject("main");
-                JSONObject sys = jsonObj.getJSONObject("sys");
-                JSONObject wind = jsonObj.getJSONObject("wind");
-                JSONObject weather = jsonObj.getJSONArray("weather").getJSONObject(0);
+            protected String doInBackground(String... args) {
+                String response = HttpRequest.excuteGet("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&lang=he" + "&units=metric&appid=" + API);
+                // return response
+                return response;
+            }
 
-                Long updatedAt = jsonObj.getLong("dt");
-                String updatedAtText = "עודכן ב: " + new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.ENGLISH).format(new Date(updatedAt * 1000));
-                String temp = main.getString("temp") + "°C";
-                String tempMin = "מינ' טמפרטורה: " + main.getString("temp_min") + "°C";
-                String tempMax = "מקס' טמפרטורה: " + main.getString("temp_max") + "°C";
-                String pressure = main.getString("pressure");
-                String humidity = main.getString("humidity");
+            @Override
+            protected void onPostExecute(String result) {
 
-                Long sunrise = sys.getLong("sunrise");
-                Long sunset = sys.getLong("sunset");
-                String windSpeed = wind.getString("speed");
-                String weatherDescription = weather.getString("description");
+                try {
+                    JSONObject jsonObj = new JSONObject(result);
+                    JSONObject main = jsonObj.getJSONObject("main");
+                    JSONObject sys = jsonObj.getJSONObject("sys");
+                    JSONObject wind = jsonObj.getJSONObject("wind");
+                    JSONObject weather = jsonObj.getJSONArray("weather").getJSONObject(0);
 
-                String address = jsonObj.getString("name") + ", " + sys.getString("country");
+                    Long updatedAt = jsonObj.getLong("dt");
+                    String updatedAtText = "עודכן ב: " + new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.ENGLISH).format(new Date(updatedAt * 1000));
+                    String temp = main.getString("temp") + "°C";
+                    String tempMin = "מינ' טמפרטורה: " + main.getString("temp_min") + "°C";
+                    String tempMax = "מקס' טמפרטורה: " + main.getString("temp_max") + "°C";
+                    String pressure = main.getString("pressure");
+                    String humidity = main.getString("humidity");
 
-                /* Populating extracted data into our views */
-                addressTxt.setText(address);
-                updated_atTxt.setText(updatedAtText);
-                statusTxt.setText(weatherDescription.toUpperCase());
-                tempTxt.setText(temp);
-                temp_minTxt.setText(tempMin);
-                temp_maxTxt.setText(tempMax);
-                sunriseTxt.setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(new Date(sunrise * 1000)));
-                sunsetTxt.setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(new Date(sunset * 1000)));
-                windTxt.setText(windSpeed);
-                pressureTxt.setText(pressure);
-                humidityTxt.setText(humidity);
+                    Long sunrise = sys.getLong("sunrise");
+                    Long sunset = sys.getLong("sunset");
+                    String windSpeed = wind.getString("speed");
+                    String weatherDescription = weather.getString("description");
 
-                /* Views populated, Hiding the loader, Showing the main design */
-                findViewById(R.id.loader).setVisibility(View.GONE);
-                findViewById(R.id.mainContainer).setVisibility(View.VISIBLE);
+                    String address = jsonObj.getString("name") + ", " + sys.getString("country");
 
-            } catch (JSONException e) {
-                findViewById(R.id.loader).setVisibility(View.GONE);
-                findViewById(R.id.errorText).setVisibility(View.VISIBLE);
+                    /* Populating extracted data into our views */
+                    addressTxt.setText(address);
+                    updated_atTxt.setText(updatedAtText);
+                    statusTxt.setText(weatherDescription.toUpperCase());
+                    tempTxt.setText(temp);
+                    temp_minTxt.setText(tempMin);
+                    temp_maxTxt.setText(tempMax);
+                    sunriseTxt.setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(new Date(sunrise * 1000)));
+                    sunsetTxt.setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(new Date(sunset * 1000)));
+                    windTxt.setText(windSpeed);
+                    pressureTxt.setText(pressure);
+                    humidityTxt.setText(humidity);
+
+                    /* Views populated, Hiding the loader, Showing the main design */
+                    findViewById(R.id.loader).setVisibility(View.GONE);
+                    findViewById(R.id.mainContainer).setVisibility(View.VISIBLE);
+
+                } catch (JSONException e) {
+                    //findViewById(R.id.loader).setVisibility(View.GONE);
+                    //findViewById(R.id.errorText).setVisibility(View.VISIBLE);
+                    popUpMessage("אנא הכנס עיר תקינה");
+                    CITY = "jerusalem";
+                    enterCity.getText().clear();
+                    new weatherTask().execute();
+                }
             }
         }
     }
-}
+

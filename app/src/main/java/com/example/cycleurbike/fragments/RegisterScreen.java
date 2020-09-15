@@ -79,7 +79,6 @@ public class RegisterScreen extends Fragment {
                 mainActivity.loadMainAppPage(); //
             }
         });
-
         return view;
     }
 }

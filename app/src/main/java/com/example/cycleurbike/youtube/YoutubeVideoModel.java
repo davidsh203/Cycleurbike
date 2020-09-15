@@ -20,7 +20,6 @@ public class YoutubeVideoModel {
         this.title = title;
     }
 
-
     public String getDuration() {
         return duration;
     }
