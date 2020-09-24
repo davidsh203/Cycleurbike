@@ -7,10 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
 import com.example.cycleurbike.R;
+import com.example.cycleurbike.activities.MainActivity;
 import com.example.cycleurbike.activities.MapsActivity;
 import com.example.cycleurbike.activities.WeatherScreen;
 import com.example.cycleurbike.activities.YouTube;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,7 +22,7 @@ import com.example.cycleurbike.activities.YouTube;
  * create an instance of this fragment.
  */
 public class MainAppPage extends Fragment {
-    Intent intent;
+    private FirebaseAuth mAuth;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -89,6 +93,18 @@ public class MainAppPage extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MapsActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        final Button signOut = view.findViewById(R.id.signOutButtonMainAppPage);
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.getInstance().signOut();
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.loadLogInScreen();
+                Toast.makeText(getActivity(),"התנתקת בהצלחה",Toast.LENGTH_LONG).show();
+
             }
         });
         return view;

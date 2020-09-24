@@ -1,6 +1,8 @@
 package com.example.cycleurbike.fragments;
 
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +11,16 @@ import com.example.cycleurbike.R;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
 import com.example.cycleurbike.activities.MainActivity;
 import com.example.cycleurbike.classes.OnSwipeTouchListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,6 +32,10 @@ public class LogInScreen extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    EditText logEmail,logPassword;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -58,28 +72,80 @@ public class LogInScreen extends Fragment {
         }
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+       /* FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);*/
+       mAuth.addAuthStateListener(mAuthStateListener);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.log_in_screen, container, false);
+        logEmail = view.findViewById(R.id.enterMailTextMainScreen);
+        logPassword = view.findViewById(R.id.enterPasswordTextMainScreen);
+        mAuth = FirebaseAuth.getInstance();
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser mfiFirebaseUser = mAuth.getCurrentUser();
+                if (mfiFirebaseUser != null){
+                    Toast.makeText(getActivity(),"התחברת בהצלחה!",Toast.LENGTH_LONG).show();
+                    MainActivity mainActivity = (MainActivity) getActivity();
+                    mainActivity.loadMainAppPage();
+                }else{
+                    //Toast.makeText(getActivity(),"שם משתמש או סיסמה אינם נכונים אנא נסה שנית",Toast.LENGTH_LONG).show();
+                }
+            }
+        };
         final Animation rotateAnim = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
 
         final Button enterButtonFrag1 = (Button) view.findViewById(R.id.enterButtonMainScreen);
-        enterButtonFrag1.setOnClickListener(new View.OnClickListener() {
+        /*enterButtonFrag1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // inner class
               startButtonAnimation(enterButtonFrag1,rotateAnim);
 
             }
-        });
-        enterButtonFrag1.setOnLongClickListener(new View.OnLongClickListener() {
+        });*/
+        enterButtonFrag1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onClick(View v) {
                 v.startAnimation(rotateAnim);
-                MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.loadMainAppPage();
-                return true;
+
+                String email = logEmail.getText().toString();
+                String password = logPassword.getText().toString();
+
+                if(email.isEmpty()){
+                    logEmail.setError("אנא הכנס מייל");
+                }
+               else if(password.isEmpty()){
+                    logPassword.setError("אנא הכנס סיסמה");
+                }
+               else  if(email.isEmpty() && password.isEmpty()){
+                    Toast.makeText(getActivity(),"אנא הכנס מייל וסיסמה",Toast.LENGTH_LONG).show();
+                }
+               else if(!(email.isEmpty() && password.isEmpty())){
+                   mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                       @Override
+                       public void onComplete(@NonNull Task<AuthResult> task) {
+                           if(task.isSuccessful()){
+                               Toast.makeText(getActivity(),"התחברת בהצלחה",Toast.LENGTH_LONG).show();
+                               MainActivity mainActivity = (MainActivity) getActivity();
+                               mainActivity.loadMainAppPage();
+                           }else {
+                               Toast.makeText(getActivity(),"שם משתמש או סיסמה אינם נכונים אנא נסה שנית",Toast.LENGTH_LONG).show();
+                           }
+                       }
+                   });
+                }
+
+             //  return true;
             }
         });
 
@@ -88,7 +154,8 @@ public class LogInScreen extends Fragment {
         registerButtonFrag1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.startAnimation(myAnim2);
+                //v.startAnimation(myAnim2);
+
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.loadRegisterScreen();
             }
@@ -96,11 +163,13 @@ public class LogInScreen extends Fragment {
 
         // אנימציה שכחתי סיסמה
         final Animation myAnim3 = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
-        Button forgetPasswordButtonFrag1 = (Button) view.findViewById(R.id.forgetPasswordButtonMainScreen);
+        final Button forgetPasswordButtonFrag1 = (Button) view.findViewById(R.id.forgetPasswordButtonMainScreen);
         forgetPasswordButtonFrag1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 v.startAnimation(myAnim3);
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.loadResetPasswordScreen();
             }
         });
 
@@ -138,5 +207,21 @@ public class LogInScreen extends Fragment {
             }
         });
     }
+
+    /*
+    private void updateUI(FirebaseUser currentUser) {
+        if(currentUser != null){
+            Toast.makeText(getActivity(),"אתה מחובר למערכת",Toast.LENGTH_LONG).show();
+            // startActivity(new Intent(getActivity(),MainAppPage.class));
+
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.loadMainAppPage(); //
+        }else {
+            Toast.makeText(getActivity(),"מלא את פרטיך על מנת להירשם",Toast.LENGTH_LONG).show();
+        }
+    }*/
 }
+
+
+
 

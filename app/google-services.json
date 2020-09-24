@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "749185468414",
+    "firebase_url": "https://cycleurbike-95429.firebaseio.com",
+    "project_id": "cycleurbike-95429",
+    "storage_bucket": "cycleurbike-95429.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:749185468414:android:aba986e594e87876d7e2af",
+        "android_client_info": {
+          "package_name": "com.example.cycleurbike"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "749185468414-c62gqhft6dqdji6f3lc70k9gqec0cfpk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUCgTlb1T6zgTKihOQFRtBMWUS4RWk_bc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "749185468414-c62gqhft6dqdji6f3lc70k9gqec0cfpk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

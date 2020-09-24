@@ -7,6 +7,7 @@ import com.example.cycleurbike.R;
 import com.example.cycleurbike.fragments.LogInScreen;
 import com.example.cycleurbike.fragments.RegisterScreen;
 import com.example.cycleurbike.fragments.MainAppPage;
+import com.example.cycleurbike.fragments.ResetPasswordScreen;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*
+
     public void loadLogInScreen() { //פונקציה שטוענת את הכניסה לאפליקציה
         LogInScreen logInScreen = new LogInScreen();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.addToBackStack(null);
         transaction.commit();
     }
-*/
+
     public void loadRegisterScreen() {  //פונקציה שטוענת את מסך ההרשמה
         RegisterScreen registerScreen = new RegisterScreen();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -48,6 +49,14 @@ public class MainActivity extends AppCompatActivity {
         MainAppPage mainAppPage = new MainAppPage();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_layout, mainAppPage);
+        // transaction.addToBackStack(null);  //ברגע שהמשתמש לוחץ על מקש חזור בפלאפון זה מחזיר אותו למסך הקודם שהוא היה,במקרה הזה לא צריך כי ברגע שהוא התחבר אין צורך לחזור למסך של ההתחברות אלא בלחיצת כפתור התנתק
+        transaction.commit();
+    }
+
+    public void loadResetPasswordScreen(){
+        ResetPasswordScreen resetPasswordScreen = new ResetPasswordScreen();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_layout, resetPasswordScreen);
         transaction.addToBackStack(null);
         transaction.commit();
 

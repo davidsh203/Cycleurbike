@@ -7,9 +7,9 @@
     <string name="close_player_activity">Close Player activity</string>
     <!--  we need to use video ids instead of video link  -->
     <string-array name="video_id_array">
-       	<item>oA4dQEiVJ7E</item>
-	<item>tzhzghajvFw</item>
-	<item>QTO77X_sKP0</item>
+        <item>oA4dQEiVJ7E</item>
+        <item>tzhzghajvFw</item>
+        <item>QTO77X_sKP0</item>
         <item>AhJhAnb2IIc</item>
         <item>XwprrzKZcY0</item>
         <item>Fa09yTqqI8Q</item>

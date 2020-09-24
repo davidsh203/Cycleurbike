@@ -95,7 +95,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:text="שכחתי פרטי זיהוי"
+            android:text="שכחתי סיסמה"
             android:textSize="18sp" />
 
     </LinearLayout>
