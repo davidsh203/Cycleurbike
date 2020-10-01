@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.example.cycleurbike.R;
 import com.example.cycleurbike.activities.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -84,9 +86,6 @@ public class RegisterScreen extends Fragment {
         updateUI(currentUser);
     }*/
 
-    public void CreateUser(){
-
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -134,15 +133,15 @@ public class RegisterScreen extends Fragment {
                 String birthDay = regBirthDay.getText().toString();
                 String city = regCity.getText().toString();
                 UserHelperClass helperClass = new UserHelperClass(firstName,lastName,email,password,birthDay,city);
-                helperClass.setId(reference.push().getKey());
+                //helperClass.setId(reference.push().getKey());
+                helperClass.setId(firstName + " " +lastName + " Id: "+reference.push().getKey());
                 id=helperClass.getId1();
                 reference.child(helperClass.getId1()).child("First name").setValue(helperClass.getFirstName());
-                reference.child(helperClass.getId1()).child("lLast name").setValue(helperClass.getLastName());
+                reference.child(helperClass.getId1()).child("Last name").setValue(helperClass.getLastName());
                 reference.child(helperClass.getId1()).child("Email").setValue(helperClass.getEmail());
-                reference.child(helperClass.getId1()).child("Password").setValue(helperClass.getPassword());
+                //reference.child(helperClass.getId1()).child("Password").setValue(helperClass.getPassword());
                 reference.child(helperClass.getId1()).child("BirthDay").setValue(helperClass.getBirthDay());
                 reference.child(helperClass.getId1()).child("City").setValue(helperClass.getCity());
-                reference.child(helperClass.getId1()).removeValue();
 
                 if (TextUtils.isEmpty(email)) {
                     regEmail.setError("נא הכנס אימייל");
@@ -166,9 +165,20 @@ public class RegisterScreen extends Fragment {
                        if (task.isSuccessful()) {
                            Toast.makeText(getActivity(), "המשתמש נוצר", Toast.LENGTH_LONG).show();
                            // startActivity(new Intent(getContext(), MainAppPage.class));
-
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(getActivity(),"אימות אימייל נשלח כעת נא להיכנס למייל להמשך הרשמה",Toast.LENGTH_LONG).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getActivity(),"אימות מייל נכשל,נא נסה שנית",Toast.LENGTH_LONG).show();
+                                }
+                            });
                            MainActivity mainActivity = (MainActivity) getActivity();
-                           mainActivity.loadMainAppPage(); //
+                           mainActivity.loadLogInScreen(); //
 
                        } else {
                            Toast.makeText(getActivity(), "התרחשה שגיאה,יכול להיות שהאימייל קיים כבר במערכת אנא נסה אימייל אחר" + task.getException().getMessage(), Toast.LENGTH_LONG).show();

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/main_app_page_empty"
     android:orientation="vertical"
+    android:screenOrientation="portrait"
     tools:context=".fragments.MainAppPage">
 
     <LinearLayout
@@ -16,9 +17,12 @@
 
         <Button
             android:id="@+id/signOutButtonMainAppPage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="התנתק" />
+            android:layout_width="80dp"
+            android:layout_height="47dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/disnn" />
     </LinearLayout>
 
     <LinearLayout

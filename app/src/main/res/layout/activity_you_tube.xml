@@ -7,14 +7,15 @@
     android:background="#EEEEEE"
     android:orientation="vertical"
     tools:context=".activities.YouTube">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="#CAD40F"
         android:minHeight="?attr/actionBarSize"
         app:title="@string/app_name"
-        app:titleTextColor="@android:color/white" />
+        app:titleTextColor="@android:color/black" />
 
     <!--  recycler view to show the list of youtube videos -->
     <androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="10dp"
+        android:background="@drawable/empty_page"
         android:padding="10dp" />
 
 

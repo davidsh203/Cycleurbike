@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         LogInScreen logInScreen = new LogInScreen();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_layout, logInScreen);
-        transaction.addToBackStack(null);
+        //transaction.addToBackStack(null);
         transaction.commit();
     }
 

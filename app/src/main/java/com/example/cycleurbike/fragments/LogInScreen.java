@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +17,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.cycleurbike.activities.MainActivity;
-import com.example.cycleurbike.classes.OnSwipeTouchListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
@@ -34,8 +37,8 @@ public class LogInScreen extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
-    EditText logEmail,logPassword;
-
+    EditText logEmail, logPassword;
+    Boolean userLog = true;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -77,9 +80,9 @@ public class LogInScreen extends Fragment {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-       /* FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);*/
-       mAuth.addAuthStateListener(mAuthStateListener);
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+        //mAuth.addAuthStateListener(mAuthStateListener);
     }
 
     @Override
@@ -94,15 +97,23 @@ public class LogInScreen extends Fragment {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser mfiFirebaseUser = mAuth.getCurrentUser();
-                if (mfiFirebaseUser != null){
-                    Toast.makeText(getActivity(),"התחברת בהצלחה!",Toast.LENGTH_LONG).show();
-                    MainActivity mainActivity = (MainActivity) getActivity();
-                    mainActivity.loadMainAppPage();
-                }else{
+                if (mfiFirebaseUser != null) {
+                    if (!mfiFirebaseUser.isEmailVerified()) {
+                        //MainActivity mainActivity = (MainActivity) getActivity();
+                        // mainActivity.loadLogInScreen();
+                        //Toast.makeText(getActivity(),"אמת מייל",Toast.LENGTH_LONG).show();
+                    } else if (mfiFirebaseUser.isEmailVerified()) {
+                        Toast.makeText(getActivity(), "התחברת בהצלחה!", Toast.LENGTH_LONG).show();
+                        MainActivity mainActivity = (MainActivity) getActivity();
+                        mainActivity.loadMainAppPage();
+                    }
+                } else {
                     //Toast.makeText(getActivity(),"שם משתמש או סיסמה אינם נכונים אנא נסה שנית",Toast.LENGTH_LONG).show();
                 }
             }
         };
+
+
         final Animation rotateAnim = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
 
         final Button enterButtonFrag1 = (Button) view.findViewById(R.id.enterButtonMainScreen);
@@ -121,33 +132,52 @@ public class LogInScreen extends Fragment {
                 String email = logEmail.getText().toString();
                 String password = logPassword.getText().toString();
 
-                if(email.isEmpty()){
+                if (email.isEmpty()) {
                     logEmail.setError("אנא הכנס מייל");
-                }
-               else if(password.isEmpty()){
+                } else if (password.isEmpty()) {
                     logPassword.setError("אנא הכנס סיסמה");
-                }
-               else  if(email.isEmpty() && password.isEmpty()){
-                    Toast.makeText(getActivity(),"אנא הכנס מייל וסיסמה",Toast.LENGTH_LONG).show();
-                }
-               else if(!(email.isEmpty() && password.isEmpty())){
-                   mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                       @Override
-                       public void onComplete(@NonNull Task<AuthResult> task) {
-                           if(task.isSuccessful()){
-                               Toast.makeText(getActivity(),"התחברת בהצלחה",Toast.LENGTH_LONG).show();
-                               MainActivity mainActivity = (MainActivity) getActivity();
-                               mainActivity.loadMainAppPage();
-                           }else {
-                               Toast.makeText(getActivity(),"שם משתמש או סיסמה אינם נכונים אנא נסה שנית",Toast.LENGTH_LONG).show();
-                           }
-                       }
-                   });
-                }
+                } else if (password.length() < 6) {
+                    logPassword.setError("הסיסמה חייבת להכיל לפחות 6 תווים");
+                } else if (email.isEmpty() && password.isEmpty()) {
+                    Toast.makeText(getActivity(), "אנא הכנס מייל וסיסמה", Toast.LENGTH_LONG).show();
+                } else if (!(email.isEmpty() && password.isEmpty())) {
+                    mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (task.isSuccessful()) {
 
-             //  return true;
+                                if (!user.isEmailVerified()) {
+                                    Toast.makeText(getActivity(), "אמת מייל", Toast.LENGTH_LONG).show();
+                                } else if (user.isEmailVerified()) {
+                                    Toast.makeText(getActivity(), "התחברת בהצלחה", Toast.LENGTH_LONG).show();
+                                    MainActivity mainActivity = (MainActivity) getActivity();
+                                    mainActivity.loadMainAppPage();
+
+                                }
+
+                            }
+                            if (!task.isSuccessful()) {
+                                try {
+                                    throw task.getException();
+                                }
+                                // if user enters wrong email.
+                                catch (FirebaseAuthInvalidUserException invalidEmail) {
+                                    Toast.makeText(getActivity(), "המייל אינו קיים במערכת אנא הירשם בכפתור מטה", Toast.LENGTH_LONG).show();
+                                }
+                                // if user enters wrong password.
+                                catch (FirebaseAuthInvalidCredentialsException wrongPassword) {
+                                    Toast.makeText(getActivity(), "הסיסמה שהזנת שגויה אנא נסה שנית", Toast.LENGTH_LONG).show();
+                                } catch (Exception e) {
+                                    Toast.makeText(getActivity(), "התרחשה שגיאה אנא נסה שנית", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }
+                    });
+                }
             }
         });
+
 
         final Animation myAnim2 = AnimationUtils.loadAnimation(getContext(), R.anim.scale);
         Button registerButtonFrag1 = (Button) view.findViewById(R.id.registerButtonMainScreen);
@@ -173,16 +203,6 @@ public class LogInScreen extends Fragment {
             }
         });
 
-        view.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
-
-            @Override
-            public void onSwipeRight() {
-                super.onSwipeRight();
-                MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.loadRegisterScreen();
-
-            }
-        });
         return view;
     }
 
@@ -199,6 +219,7 @@ public class LogInScreen extends Fragment {
             @Override
             public void onAnimationRepeat(Animation animation) {
             }
+
             // TODO למצוא דרך להפעיל את הפונקציה על ידי העברת הפרמטר שנלחץ לפונ' בכדי לקצר בקוד
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -220,6 +241,16 @@ public class LogInScreen extends Fragment {
             Toast.makeText(getActivity(),"מלא את פרטיך על מנת להירשם",Toast.LENGTH_LONG).show();
         }
     }*/
+
+
+    private void updateUI(FirebaseUser currentUser) {
+        if (currentUser != null && currentUser.isEmailVerified()) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.loadMainAppPage(); //
+        } else {
+            Toast.makeText(getActivity(), "מלא את פרטיך על מנת להירשם", Toast.LENGTH_LONG).show();
+        }
+    }
 }
 
 
