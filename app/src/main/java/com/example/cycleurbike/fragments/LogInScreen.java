@@ -81,8 +81,27 @@ public class LogInScreen extends Fragment {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-        //mAuth.addAuthStateListener(mAuthStateListener);
+        //updateUI(currentUser);
+        if (mAuthStateListener != null) {
+        mAuth.addAuthStateListener(mAuthStateListener);}
+    }
+
+/*
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthStateListener != null) {
+            mAuth.removeAuthStateListener(mAuthStateListener);
+        }
+        mAuth.removeAuthStateListener(mAuthStateListener);
+    }
+*/
+
+
+
+//פונקציה שבודקת אם המבנה של המייל שהוקלד תקין
+    public boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     @Override
@@ -103,7 +122,7 @@ public class LogInScreen extends Fragment {
                         // mainActivity.loadLogInScreen();
                         //Toast.makeText(getActivity(),"אמת מייל",Toast.LENGTH_LONG).show();
                     } else if (mfiFirebaseUser.isEmailVerified()) {
-                        Toast.makeText(getActivity(), "התחברת בהצלחה!", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getActivity(), "התחברת בהצלחה!", Toast.LENGTH_LONG).show();
                         MainActivity mainActivity = (MainActivity) getActivity();
                         mainActivity.loadMainAppPage();
                     }
@@ -128,11 +147,13 @@ public class LogInScreen extends Fragment {
             @Override
             public void onClick(View v) {
                 v.startAnimation(rotateAnim);
+                mAuth.removeAuthStateListener(mAuthStateListener);
 
                 String email = logEmail.getText().toString();
                 String password = logPassword.getText().toString();
+                if(!isEmailValid(email)){ logEmail.setError("אנא הכנס מייל תקין");}
 
-                if (email.isEmpty()) {
+                    if (email.isEmpty()) {
                     logEmail.setError("אנא הכנס מייל");
                 } else if (password.isEmpty()) {
                     logPassword.setError("אנא הכנס סיסמה");
@@ -153,7 +174,6 @@ public class LogInScreen extends Fragment {
                                     Toast.makeText(getActivity(), "התחברת בהצלחה", Toast.LENGTH_LONG).show();
                                     MainActivity mainActivity = (MainActivity) getActivity();
                                     mainActivity.loadMainAppPage();
-
                                 }
 
                             }
@@ -167,7 +187,9 @@ public class LogInScreen extends Fragment {
                                 }
                                 // if user enters wrong password.
                                 catch (FirebaseAuthInvalidCredentialsException wrongPassword) {
-                                    Toast.makeText(getActivity(), "הסיסמה שהזנת שגויה אנא נסה שנית", Toast.LENGTH_LONG).show();
+                                    String email = logEmail.getText().toString();
+                                    if(isEmailValid(email)) //בודק אם בכלל המייל שהוזן בעל מבנה תקין
+                                    {Toast.makeText(getActivity(), "הסיסמה שהזנת שגויה אנא נסה שנית", Toast.LENGTH_LONG).show();}
                                 } catch (Exception e) {
                                     Toast.makeText(getActivity(), "התרחשה שגיאה אנא נסה שנית", Toast.LENGTH_LONG).show();
                                 }

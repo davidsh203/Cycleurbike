@@ -86,6 +86,11 @@ public class RegisterScreen extends Fragment {
         updateUI(currentUser);
     }*/
 
+    //פונקציה שבודקת אם המבנה של המייל שהוקלד תקין
+    public boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -132,38 +137,65 @@ public class RegisterScreen extends Fragment {
                 String password = regPassword.getText().toString();
                 String birthDay = regBirthDay.getText().toString();
                 String city = regCity.getText().toString();
-                UserHelperClass helperClass = new UserHelperClass(firstName,lastName,email,password,birthDay,city);
-                //helperClass.setId(reference.push().getKey());
-                helperClass.setId(firstName + " " +lastName + " Id: "+reference.push().getKey());
-                id=helperClass.getId1();
-                reference.child(helperClass.getId1()).child("First name").setValue(helperClass.getFirstName());
-                reference.child(helperClass.getId1()).child("Last name").setValue(helperClass.getLastName());
-                reference.child(helperClass.getId1()).child("Email").setValue(helperClass.getEmail());
-                //reference.child(helperClass.getId1()).child("Password").setValue(helperClass.getPassword());
-                reference.child(helperClass.getId1()).child("BirthDay").setValue(helperClass.getBirthDay());
-                reference.child(helperClass.getId1()).child("City").setValue(helperClass.getCity());
 
-                if (TextUtils.isEmpty(email)) {
+                if (TextUtils.isEmpty(firstName)) {
+                    regFirstName.setError("נא הכנס שם פרטי");
+                    regFirstName.requestFocus();
+                }
+                else if (TextUtils.isEmpty(lastName)) {
+                    regLastName.setError("נא הכנס שם משפחה");
+                    regLastName.requestFocus();
+                }
+                else if (TextUtils.isEmpty(email)) {
                     regEmail.setError("נא הכנס אימייל");
                     regEmail.requestFocus();
                 }
-
+                else if(!isEmailValid(email)){
+                    regEmail.setError("נא הכנס איימייל תקין");
+                    regEmail.requestFocus();
+                }
                 else if (TextUtils.isEmpty(password)) {
                     regPassword.setError("נא הכנס סיסמה");
+                    regPassword.requestFocus();
+                }
+                else if (TextUtils.isEmpty(city)) {
+                    regCity.setError("נא הכנס עיר");
+                    regCity.requestFocus();
                 }
 
                 else if (password.length() < 6) {
                     regPassword.setError("הסיסמה חייבת להכיל לפחות 6 תווים");
+                    regPassword.requestFocus();
                 }
-                else if(email.isEmpty() && password.isEmpty()){
-                    Toast.makeText(getActivity(),"אנא מלא את שדות האימייל והסיסמה",Toast.LENGTH_LONG).show();
+                else if (firstName.length() > 25) {
+                    regFirstName.setError("אנא הכנס שם פרטי תקין");
+                    regFirstName.requestFocus();
                 }
-               else if(!(email.isEmpty() && password.isEmpty())){
+                else if (lastName.length() > 25) {
+                    regLastName.setError("אנא הכנס שם משפחה תקין");
+                    regLastName.requestFocus();
+                }
+                else if (city.length() > 25) {
+                    regCity.setError("אנא הכנס עיר תקינה");
+                    regCity.requestFocus();
+                }
+
+               else{
+                    UserHelperClass helperClass = new UserHelperClass(firstName,lastName,email,password,birthDay,city);
+                    //helperClass.setId(reference.push().getKey());
+                    helperClass.setId(firstName + " " +lastName + " Id: "+reference.push().getKey());
+                    id=helperClass.getId1();
+                    reference.child(helperClass.getId1()).child("First name").setValue(helperClass.getFirstName());
+                    reference.child(helperClass.getId1()).child("Last name").setValue(helperClass.getLastName());
+                    reference.child(helperClass.getId1()).child("Email").setValue(helperClass.getEmail());
+                    //reference.child(helperClass.getId1()).child("Password").setValue(helperClass.getPassword());
+                    reference.child(helperClass.getId1()).child("BirthDay").setValue(helperClass.getBirthDay());
+                    reference.child(helperClass.getId1()).child("City").setValue(helperClass.getCity());
                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                    @Override
                    public void onComplete(@NonNull Task<AuthResult> task) {
                        if (task.isSuccessful()) {
-                           Toast.makeText(getActivity(), "המשתמש נוצר", Toast.LENGTH_LONG).show();
+                           Toast.makeText(getActivity(), "המשתמש נוצר בהצלחה", Toast.LENGTH_LONG).show();
                            // startActivity(new Intent(getContext(), MainAppPage.class));
                             FirebaseUser user = mAuth.getCurrentUser();
                             user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
