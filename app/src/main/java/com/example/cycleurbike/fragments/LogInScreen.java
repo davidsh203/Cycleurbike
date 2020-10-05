@@ -1,11 +1,10 @@
 package com.example.cycleurbike.fragments;
 
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -148,7 +147,6 @@ public class LogInScreen extends Fragment {
             public void onClick(View v) {
                 v.startAnimation(rotateAnim);
                 mAuth.removeAuthStateListener(mAuthStateListener);
-
                 String email = logEmail.getText().toString();
                 String password = logPassword.getText().toString();
                 if(!isEmailValid(email)){ logEmail.setError("אנא הכנס מייל תקין");}

@@ -37,7 +37,7 @@ public class YouTube extends AppCompatActivity {
      * populate the recyclerview and implement the click event here
      */
     private void populateRecyclerView() {
-        final ArrayList<YoutubeVideoModel> youtubeVideoModelArrayList = generateDummyVideoList();
+        final ArrayList<YoutubeVideoModel> youtubeVideoModelArrayList = generateVideoList();
         YoutubeVideoAdapter adapter = new YoutubeVideoAdapter(this, youtubeVideoModelArrayList);
         recyclerView.setAdapter(adapter);
 
@@ -45,7 +45,6 @@ public class YouTube extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerViewOnClickListener(this, new RecyclerViewOnClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
                 //start youtube player activity by passing selected video id via intent
                 startActivity(new Intent(YouTube.this, YoutubePlayerActivity.class)
                         .putExtra("video_id", youtubeVideoModelArrayList.get(position).getVideoId()));
@@ -55,11 +54,11 @@ public class YouTube extends AppCompatActivity {
     }
 
     /**
-     * method to generate dummy array list of videos
+     * method to generate array list of videos
      *
      * @return
      */
-    private ArrayList<YoutubeVideoModel> generateDummyVideoList() {
+    private ArrayList<YoutubeVideoModel> generateVideoList() {
         ArrayList<YoutubeVideoModel> youtubeVideoModelArrayList = new ArrayList<>();
 
         //get the video id array, title array and duration array from strings.xml
