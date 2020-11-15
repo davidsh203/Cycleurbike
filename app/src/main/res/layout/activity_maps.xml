@@ -1,9 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MapsActivity" />
+    tools:context=".activities.MapsActivity">
+
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MapsActivity"
+        tools:layout="@android:layout/simple_spinner_dropdown_item" />
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:orientation="vertical">
+
+        <Chronometer
+            android:id="@+id/stoper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="startChronometer"
+            android:id="@+id/startButton"
+            android:background="#ccff33"
+            android:textStyle="bold"
+            android:text="התחל" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="pauseChronometer"
+            android:id="@+id/pauseButton"
+            android:background="#ccff33"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:text="השהה" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="resetChronometer"
+            android:background="#ccff33"
+            android:textStyle="bold"
+            android:id="@+id/stopButton"
+            android:visibility="gone"
+            android:text="עצור" />
+
+
+        <TextView
+            android:id="@+id/distance_text_view_activity_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="מרחק"
+            android:textSize="22sp"
+            android:textColor="#000000"/>
+
+
+        <TextView
+            android:id="@+id/speed_avg_text_view_activity_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="מהירות ממוצעת"
+            android:textSize="22sp"
+            android:textColor="#000000"/>
+
+
+    </LinearLayout>
+
+
+    <ProgressBar
+        android:id="@+id/progress_bar_activity_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+
+
+
+
+</FrameLayout>

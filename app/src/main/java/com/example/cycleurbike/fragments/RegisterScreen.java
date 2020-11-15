@@ -1,9 +1,14 @@
 package com.example.cycleurbike.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,61 +27,22 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RegisterScreen#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class RegisterScreen extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
+
     private FirebaseAuth mAuth;
     FirebaseDatabase rootNode;
     DatabaseReference reference;
 
-    EditText regFirstName, regLastName,regEmail,regPassword,regBirthDay,regCity;
+    EditText regFirstName, regLastName, regEmail, regPassword, regBirthDay, regCity;
     Button regFinishButton;
     String id;
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    public RegisterScreen() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Fragment2.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RegisterScreen newInstance(String param1, String param2) {
-        RegisterScreen fragment = new RegisterScreen();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-
-        }
-    }
     /*
     @Override
     public void onStart() {
@@ -100,11 +66,11 @@ public class RegisterScreen extends Fragment {
 
 
         regFirstName = view.findViewById(R.id.firstNameEditTextRegisterScreen);
-        regLastName =   view.findViewById(R.id.lastNameEditTextRegisterScreen);
-        regEmail =   view.findViewById(R.id.emailEditTextRegisterScreen);
-        regPassword =   view.findViewById(R.id.passwordEditTextRegisterScreen);
-        regBirthDay =   view.findViewById(R.id.birthDateEditTextRegisterScreen);
-        regCity =   view.findViewById(R.id.cityEditTextRegisterScreen);
+        regLastName = view.findViewById(R.id.lastNameEditTextRegisterScreen);
+        regEmail = view.findViewById(R.id.emailEditTextRegisterScreen);
+        regPassword = view.findViewById(R.id.passwordEditTextRegisterScreen);
+        regBirthDay = view.findViewById(R.id.birthDateEditTextRegisterScreen);
+        regCity = view.findViewById(R.id.cityEditTextRegisterScreen);
         regFinishButton = view.findViewById(R.id.finishButtonRegisterScreen);
         final Animation myAnim4 = AnimationUtils.loadAnimation(getContext(), R.anim.bounce);
         Button button4 = (Button) view.findViewById(R.id.finishButtonRegisterScreen);
@@ -116,13 +82,13 @@ public class RegisterScreen extends Fragment {
         });
 
 
-        if(mAuth.getCurrentUser() != null){  //התנאי בודק אם יש משתמש קיים במערכת, באם קיים מכניס אותו למסך הראשי
+        if (mAuth.getCurrentUser() != null && mAuth.getCurrentUser().isEmailVerified()) {  //התנאי בודק אם יש משתמש קיים במערכת, באם קיים מכניס אותו למסך הראשי
 
             MainActivity mainActivity = (MainActivity) getActivity();
-            mainActivity.loadMainAppPage(); //
+            mainActivity.loadMainAppScreen(); //
 
-           // startActivity(new Intent(getActivity().getApplicationContext(),LogInScreen.class));
-          //  getActivity().finish();
+            // startActivity(new Intent(getActivity().getApplicationContext(),LogInScreen.class));
+            //  getActivity().finish();
         }
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,89 +107,125 @@ public class RegisterScreen extends Fragment {
                 if (TextUtils.isEmpty(firstName)) {
                     regFirstName.setError("נא הכנס שם פרטי");
                     regFirstName.requestFocus();
-                }
-                else if (TextUtils.isEmpty(lastName)) {
+                } else if (TextUtils.isEmpty(lastName)) {
                     regLastName.setError("נא הכנס שם משפחה");
                     regLastName.requestFocus();
-                }
-                else if (TextUtils.isEmpty(email)) {
+                } else if (TextUtils.isEmpty(email)) {
                     regEmail.setError("נא הכנס אימייל");
                     regEmail.requestFocus();
-                }
-                else if(!isEmailValid(email)){
+                } else if (!isEmailValid(email)) {
                     regEmail.setError("נא הכנס איימייל תקין");
                     regEmail.requestFocus();
-                }
-                else if (TextUtils.isEmpty(password)) {
+                } else if (TextUtils.isEmpty(password)) {
                     regPassword.setError("נא הכנס סיסמה");
                     regPassword.requestFocus();
-                }
-                else if (TextUtils.isEmpty(city)) {
+                } else if (TextUtils.isEmpty(city)) {
                     regCity.setError("נא הכנס עיר");
                     regCity.requestFocus();
-                }
-
-                else if (password.length() < 6) {
+                } else if (password.length() < 6) {
                     regPassword.setError("הסיסמה חייבת להכיל לפחות 6 תווים");
                     regPassword.requestFocus();
-                }
-                else if (firstName.length() > 25) {
+                } else if (firstName.length() > 25) {
                     regFirstName.setError("אנא הכנס שם פרטי תקין");
                     regFirstName.requestFocus();
-                }
-                else if (lastName.length() > 25) {
+                } else if (lastName.length() > 25) {
                     regLastName.setError("אנא הכנס שם משפחה תקין");
                     regLastName.requestFocus();
-                }
-                else if (city.length() > 25) {
+                } else if (city.length() > 25) {
                     regCity.setError("אנא הכנס עיר תקינה");
                     regCity.requestFocus();
-                }
-
-               else{
-                    UserHelperClass helperClass = new UserHelperClass(firstName,lastName,email,password,birthDay,city);
+                } else {
+                    final UserHelperClass helperClass = new UserHelperClass(firstName, lastName, email, birthDay, city);
                     //helperClass.setId(reference.push().getKey());
-                    helperClass.setId(firstName + " " +lastName + " Id: "+reference.push().getKey());
-                    id=helperClass.getId1();
-                    reference.child(helperClass.getId1()).child("First name").setValue(helperClass.getFirstName());
-                    reference.child(helperClass.getId1()).child("Last name").setValue(helperClass.getLastName());
-                    reference.child(helperClass.getId1()).child("Email").setValue(helperClass.getEmail());
-                    //reference.child(helperClass.getId1()).child("Password").setValue(helperClass.getPassword());
-                    reference.child(helperClass.getId1()).child("BirthDay").setValue(helperClass.getBirthDay());
-                    reference.child(helperClass.getId1()).child("City").setValue(helperClass.getCity());
-                   mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                   @Override
-                   public void onComplete(@NonNull Task<AuthResult> task) {
-                       if (task.isSuccessful()) {
-                           Toast.makeText(getActivity(), "המשתמש נוצר בהצלחה", Toast.LENGTH_LONG).show();
-                           // startActivity(new Intent(getContext(), MainAppPage.class));
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Toast.makeText(getActivity(),"אימות אימייל נשלח כעת נא להיכנס למייל להמשך הרשמה",Toast.LENGTH_LONG).show();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getActivity(),"אימות מייל נכשל,נא נסה שנית",Toast.LENGTH_LONG).show();
-                                }
-                            });
-                           MainActivity mainActivity = (MainActivity) getActivity();
-                           mainActivity.loadLogInScreen(); //
+                    helperClass.setId(firstName + " " + lastName + " Id: " + reference.push().getKey());
 
-                       } else {
-                           Toast.makeText(getActivity(), "התרחשה שגיאה,יכול להיות שהאימייל קיים כבר במערכת אנא נסה אימייל אחר" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                          // reference.child(helperClass.getId1()).removeValue();
-                           reference = rootNode.getReference("users");
-                           reference.child(id).removeValue();
-                           //MainActivity mainActivity = (MainActivity) getActivity();
-                           //mainActivity.loadRegisterScreen(); //
-                       }
-                   }
+//                    id=helperClass.getId1();
+//                    reference.child(helperClass.getId1()).child("First name").setValue(helperClass.getFirstName());
+//                    reference.child(helperClass.getId1()).child("Last name").setValue(helperClass.getLastName());
+//                    reference.child(helperClass.getId1()).child("Email").setValue(helperClass.getEmail());
+//                    //reference.child(helperClass.getId1()).child("Password").setValue(helperClass.getPassword());
+//                    reference.child(helperClass.getId1()).child("BirthDay").setValue(helperClass.getBirthDay());
+//                    reference.child(helperClass.getId1()).child("City").setValue(helperClass.getCity());
 
-                });
-            }}
+
+                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            final FirebaseUser user = mAuth.getCurrentUser();
+
+                            if (task.isSuccessful()) {
+
+                                Log.i("CREATE USER", "SUCCESS");
+
+                                reference.child(user.getUid()).setValue(helperClass, new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+
+
+                                        if (error != null) {
+
+                                            Log.i("ERROR DATABASE", error.getMessage());
+
+
+                                        } else {
+                                            user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Toast.makeText(getActivity(), "אימות אימייל נשלח כעת נא להיכנס למייל להמשך הרשמה", Toast.LENGTH_LONG).show();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(getActivity(), "אימות מייל נכשל,נא נסה שנית", Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+//                                            MainActivity mainActivity = (MainActivity) getActivity();
+//                                            mainActivity.loadMainAppScreen();
+
+                                        }
+
+                                    }
+                                });
+
+//                                   .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                               @Override
+//                               public void onComplete(@NonNull Task<Void> task) {
+//                                   Toast.makeText(getActivity(), "המשתמש נוצר בהצלחה", Toast.LENGTH_LONG).show();
+//
+//                                   Intent intent = new Intent(getContext(), MainAppScreen.class);
+//                                   intent.putExtra("user", helperClass);
+//                                   startActivity(intent);
+//                               }
+//                           });
+
+//                            user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                @Override
+//                                public void onSuccess(Void aVoid) {
+//                                    Toast.makeText(getActivity(),"אימות אימייל נשלח כעת נא להיכנס למייל להמשך הרשמה",Toast.LENGTH_LONG).show();
+//                                }
+//                            }).addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception e) {
+//                                    Toast.makeText(getActivity(),"אימות מייל נכשל,נא נסה שנית",Toast.LENGTH_LONG).show();
+//                                }
+//                            });
+
+                                MainActivity mainActivity = (MainActivity) getActivity();
+                                mainActivity.loadLogInScreen();
+                            } else {
+                                Toast.makeText(getActivity(), "התרחשה שגיאה,יכול להיות שהאימייל קיים כבר במערכת אנא נסה אימייל אחר" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                // reference.child(helperClass.getId1()).removeValue();
+                                //reference = rootNode.getReference("users");
+                                //reference.child(id).removeValue();
+                                //MainActivity mainActivity = (MainActivity) getActivity();
+                                //mainActivity.loadRegisterScreen();
+                            }
+                        }
+
+                    });
+                }
+            }
         });
         return view;
     }
@@ -240,4 +242,4 @@ public class RegisterScreen extends Fragment {
             Toast.makeText(getActivity(),"מלא את פרטיך על מנת להירשם",Toast.LENGTH_LONG).show();
         }
     }*/
-    }
+}

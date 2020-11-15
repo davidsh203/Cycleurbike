@@ -48,50 +48,47 @@ public class WeatherScreen extends AppCompatActivity {
         new weatherTask().execute();
 
     }
-
-    public void popUpMessage(String msg) { //פונקציה שמקפיצה הודעת שגיאה באם התיבת חיפוש של העיר ריקה או שהעיר עצמה אינה קיימת
+    //פונקציה שמקפיצה הודעת שגיאה באם התיבת חיפוש של העיר ריקה או שהעיר עצמה אינה קיימת
+    public void popUpMessage(String msg) {
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogCustom);
 
-        // set title
+        // תוכן ההודעה
         alertDialogBuilder.setTitle(msg);
 
-        // set dialog message
+        // קביעת כפתורי אישור וביטול
         alertDialogBuilder
                 .setMessage("")
                 .setCancelable(false)
                 .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {  //כפתור לאישור ההודעה
-                        // if this button is clicked, close
-                        // current activity
-                        // WeatherScreen.this.closeContextMenu();
+                       //לאחר שכפתור האישור נלחץ מפעיל את המחלקה הפנימית weatherTask
                         new weatherTask().execute();
                     }
                 })
                 .setNegativeButton("", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) { //כפתור לביטול ההודעה ויציאה מן ההודעה ללא פעולה
-                        // if this button is clicked, just close
-                        // the dialog box and do nothing
-                        //dialog.cancel();
+                    public void onClick(DialogInterface dialog, int id) { //כפתור לביטול ההודעה (הכפתור לא מוצג כי אין צורך)
                     }
                 });
 
-        // create alert dialog
+        // יוצר את דיאלוג ההודעה
         AlertDialog alertDialog = alertDialogBuilder.create();
 
-        // show it
+        // מפעיל את ההודעה
         alertDialog.show();
     }
-
-    public void citySearch(View view) {//פונקציה שמופעלת בלחיצה על כפתור חיפוש לאחר הקלדת עיר מסויימת ומשנה את המסך בהתאם
-
-        if (!(enterCity.getText().toString().matches(""))) { //אם שדה חיפוש העיר אינו ריק
+     //פונקציה שמופעלת בלחיצה על כפתור חיפוש לאחר הקלדת עיר מסויימת ומשנה את המסך בהתאם
+    public void citySearch(View view) {
+        //אם שדה חיפוש העיר אינו ריק
+        if (!(enterCity.getText().toString().matches(""))) {
             CITY = enterCity.getText().toString();
             new weatherTask().execute();
-        } else { //אם שדה חיפוש העיר ריק
+            //אם שדה חיפוש העיר ריק
+        } else {
             popUpMessage("אנא כתוב עיר");
         }
     }
-    public static String HttpRequestGet(String targetURL) {  //פונקציה לבקשת HTTP
+    //פונקציה לבקשת HTTP
+    public static String HttpRequestGet(String targetURL) {
         URL url;
         HttpURLConnection connection = null;
         try {
@@ -129,17 +126,15 @@ public class WeatherScreen extends AppCompatActivity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-
-                /* Showing the ProgressBar, Making the main design GONE */
+                //מציג את הפרוגרס בר
                 findViewById(R.id.loader).setVisibility(View.VISIBLE);
             }
-
+            //שולח את בקשת ה-HTTP ומאחסן אותה בתוך המשתנה
             protected String doInBackground(String... args) {
                 String response = HttpRequestGet("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&lang=he" + "&units=metric&appid=" + API);
-                // return response
                 return response;
             }
-
+            //מקבל את המשתנה מהפונקציה doInBackground ולוקח ממנו נתונים
             @Override
             protected void onPostExecute(String result) {
 
@@ -165,7 +160,8 @@ public class WeatherScreen extends AppCompatActivity {
 
                     String address = jsonObj.getString("name") + ", " + sys.getString("country");
                     String feelsLike = main.getString("feels_like");
-                    /* Populating extracted data into our views */
+
+                   //הצגת המידע שהתקבל על גבי המסך
                     addressTxt.setText(address);
                     updated_atTxt.setText(updatedAtText);
                     statusTxt.setText(weatherDescription.toUpperCase());
@@ -179,9 +175,10 @@ public class WeatherScreen extends AppCompatActivity {
                     humidityTxt.setText(humidity + "%");
                     feelsLikeTxt.setText(feelsLike);
 
-                    /* Views populated, Hiding the loader, Showing the main design */
+                   //מעלים את הפרוגרס בר
                     findViewById(R.id.loader).setVisibility(View.GONE);
 
+                    //weatherTask במקרה של שגיאה מקפיץ הודעה,מאתחל את העיר,מנקה את תיבת החיפוש ומפעיל מחדש את המחלקה הפנימית
                 } catch (JSONException e) {
                     popUpMessage("אנא הכנס עיר תקינה");
                     CITY = "jerusalem";

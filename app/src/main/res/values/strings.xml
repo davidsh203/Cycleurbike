@@ -5,7 +5,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
     <string name="close_player_activity">Close Player activity</string>
-    <string name="letters">אבגדהזחטיכלמנסעפצקרשתץףךם </string>
+    <string name="letters">אבגדהוזחטיכלמנסעפצקרשתץףךםן\',"  "</string>
+
+
     <!--  we need to use video ids instead of video link  -->
     <string-array name="video_id_array">
         <item>oA4dQEiVJ7E</item>
@@ -14,10 +16,8 @@
         <item>AhJhAnb2IIc</item>
         <item>XwprrzKZcY0</item>
         <item>Fa09yTqqI8Q</item>
-        <item>iUZEfiE8</item>
         <item>b2ig0AF4g6g</item>
         <item>VfaSyPAyc3k</item>
-        <item>6qj_yzkJ_M</item>
         <item>jHsU08T2fks</item>
         <item>PKobyFWV25w</item>
         <item>XKaOeeHQsig</item>
@@ -32,14 +32,12 @@
         <item>פניות על אופניים: שיווי משקל ומיקום הרגליים</item>
         <item>מיקום העקבים והשפעה על שיווי המשקל- טכניקה לאופני הרים</item>
         <item>8 טכניקות שאפשר וצריך להתאמן עליהן במגרש!</item>
-        <item>עמידת מוצא על אופני הרים- טכניקת רכיבה</item>
         <item>טכניקת רכיבה - עליות טכניות באופניים</item>
         <item>טיפים וטריקים אופניים</item>
-        <item>TCH-איך לטפס עליות ארוכות</item>
         <item>טיפ רכיבה של חנוך רדליך - שימוש נכון בבלמים</item>
         <item>איך להתמודד עם ירידות על אופני הרים?</item>
         <item>התאמת אופניים לרוכב כביש</item>
-        <item>TCH-איך עושים ווילי על אופני כביש</item>
+        <item>איך עושים ווילי על אופני כביש</item>
 
 
     </string-array>
@@ -51,10 +49,8 @@
         <item>06:08</item>
         <item>05:03</item>
         <item>12:36</item>
-        <item>01:03</item>
         <item>01:41</item>
         <item>02:36</item>
-        <item>03:46</item>
         <item>05:21</item>
         <item>02:46</item>
         <item>01:36</item>

@@ -2,20 +2,30 @@ package com.example.cycleurbike.fragments;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.cycleurbike.ClassHelpers.Route;
 
-public class UserHelperClass extends Fragment {
+import java.io.Serializable;
+import java.util.ArrayList;
+
+
+public class UserHelperClass implements Serializable {
 
     String firstName, lastName,email,password,birthDay,city,id;
+    ArrayList<Route> routes, sharedRoutes;
+
+
     public UserHelperClass() {
         // Required empty public constructor
     }
-    public UserHelperClass(String firstName, String lastName, String email, String password, String birthDay, String city) {
+    public UserHelperClass(String firstName, String lastName, String email, String birthDay, String city) {
         setFirstName(firstName);
         setLastName(lastName);
         setEmail(email);
-        setPassword(password);
         setBirthDay(birthDay);
         setCity(city);
+        routes = new ArrayList<>();
+        sharedRoutes = new ArrayList<>();
+
     }
 
     public void setId(String id){
@@ -70,5 +80,31 @@ public class UserHelperClass extends Fragment {
     }
     public String getCity() {
         return city;
+    }
+
+    public ArrayList<Route> getRoutes() {
+
+        if (routes == null){
+            routes = new ArrayList<>();
+        }
+
+        return routes;
+    }
+
+    public void setRoutes(ArrayList<Route> routes) {
+        this.routes = routes;
+    }
+
+    public ArrayList<Route> getSharedRoutes() {
+
+        if (sharedRoutes == null){
+            sharedRoutes = new ArrayList<>();
+        }
+
+        return sharedRoutes;
+    }
+
+    public void setSharedRoutes(ArrayList<Route> sharedRoutes) {
+        this.sharedRoutes = sharedRoutes;
     }
 }
